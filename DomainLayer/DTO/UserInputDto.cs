@@ -1,20 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DomainLayer.Model
+using System.ComponentModel.DataAnnotations;
+
+namespace DomainLayer.Dto
 {
-    public class User
-
+    public class UserInputDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Username is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Phone number is required")]
         [RegularExpression(@"^[\d\s+-]{10,15}$", ErrorMessage = "Invalid phone number")]
-
         public string UserPhone { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
@@ -27,12 +28,5 @@ namespace DomainLayer.Model
 
         [StringLength(1000, ErrorMessage = "Profile length can't exceed 1000 characters")]
         public string Profile { get; set; }
-        public ICollection<UserAddress> UserAddresses { get; set; }
-
-        
-       public ICollection<Address> Addresses { get; set; }  
-        public ICollection<Order> Orders { get; set; }
-
-
     }
 }

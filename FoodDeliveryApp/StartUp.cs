@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RepositoryLayer;
+using ServiceLayer;
 using ServiceLayer.Implementation;
 using ServiceLayer.Interface;
 
@@ -31,6 +32,9 @@ public class Startup
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(sqlConnectionString));
 
         services.AddScoped<IUser, UserService>();
+        services.AddScoped<IRestaurant, RestaurantService>();
+        services.AddScoped<IMenuItem, MenuItemService>();
+        services.AddScoped<IAddress, AddressService>();
 
 
 

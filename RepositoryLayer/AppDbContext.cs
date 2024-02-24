@@ -20,6 +20,7 @@ namespace RepositoryLayer
        // public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<MenuItem> MenuItem { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
