@@ -24,19 +24,18 @@ namespace RepositoryLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-/*            modelBuilder.Entity<UserAddress>()
-                .HasKey(u => new { u.UserId, u.AddressId });
+            modelBuilder.Entity<UserAddress>()
+                           .HasKey(ua => new { ua.UserId, ua.AddressId });
 
+            modelBuilder.Entity<UserAddress>()
+                .HasOne(ua => ua.User)
+                .WithMany(u => u.UserAddresses)
+                .HasForeignKey(ua => ua.UserId);
 
-                    modelBuilder.Entity<User>()
-            .HasMany<Order>(g => g.Orders)
-            .WithOne(s => s.User)
-            .HasForeignKey(s => s.UserId);
-
-                    modelBuilder.Entity<Restaurant>()
-             .HasMany<Order>(o => o.Orders)
-             .WithOne(r => r.Restaurant)
-             .HasForeignKey(o => o.RestaurantId);*/
+            modelBuilder.Entity<UserAddress>()
+                .HasOne(ua => ua.Address)
+                .WithMany(a => a.UserAddresses)
+                .HasForeignKey(ua => ua.AddressId);
 
         }
     }

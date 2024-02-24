@@ -13,7 +13,7 @@ namespace DomainLayer.Model
         [Key]
         public int OrderId { get; set; }
 
-        [Required]
+      
         public int UserId { get; set; }
 
         // Foreign key navigation property

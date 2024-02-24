@@ -34,6 +34,6 @@ namespace DomainLayer.Model
 
         public ICollection<User> Users { get; set; }    
 
-       // public ICollection<UserAddress> UserAddresses { get; set; }
+       public ICollection<UserAddress> UserAddresses { get; set; }
     }
 }
