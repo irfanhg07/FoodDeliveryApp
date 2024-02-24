@@ -25,5 +25,6 @@ namespace DomainLayer.Model
 
         // Navigation property
         public List<Order> Orders { get; set; }
+        public List<MenuItem> MenuItems { get; set; }
     }
 }

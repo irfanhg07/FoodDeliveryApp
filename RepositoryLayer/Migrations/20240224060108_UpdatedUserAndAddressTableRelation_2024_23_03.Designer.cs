@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RepositoryLayer;
@@ -11,9 +12,10 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240224060108_UpdatedUserAndAddressTableRelation_2024_23_03")]
+    partial class UpdatedUserAndAddressTableRelation_2024_23_03
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,32 +74,6 @@ namespace RepositoryLayer.Migrations
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemId"));
-
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ItemId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("MenuItem");
                 });
 
             modelBuilder.Entity("DomainLayer.Model.Order", b =>
@@ -199,21 +175,6 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MenuItemOrder", b =>
-                {
-                    b.Property<int>("MenuItemsItemId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrdersOrderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MenuItemsItemId", "OrdersOrderId");
-
-                    b.HasIndex("OrdersOrderId");
-
-                    b.ToTable("MenuItemOrder");
-                });
-
             modelBuilder.Entity("AddressUser", b =>
                 {
                     b.HasOne("DomainLayer.Model.Address", null)
@@ -227,17 +188,6 @@ namespace RepositoryLayer.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
-                {
-                    b.HasOne("DomainLayer.Model.Restaurant", "Restaurant")
-                        .WithMany("MenuItems")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("DomainLayer.Model.Order", b =>
@@ -259,25 +209,8 @@ namespace RepositoryLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MenuItemOrder", b =>
-                {
-                    b.HasOne("DomainLayer.Model.MenuItem", null)
-                        .WithMany()
-                        .HasForeignKey("MenuItemsItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DomainLayer.Model.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DomainLayer.Model.Restaurant", b =>
                 {
-                    b.Navigation("MenuItems");
-
                     b.Navigation("Orders");
                 });
 

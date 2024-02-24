@@ -32,6 +32,8 @@ namespace DomainLayer.Model
         [RegularExpression(@"^\d{6}$", ErrorMessage = "Invalid Pincode")]
         public string Pincode { get; set; }
 
-        public ICollection<UserAddress> UserAddresses { get; set; }
+        public ICollection<User> Users { get; set; }    
+
+       // public ICollection<UserAddress> UserAddresses { get; set; }
     }
 }

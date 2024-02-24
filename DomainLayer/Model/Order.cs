@@ -36,6 +36,8 @@ namespace DomainLayer.Model
         // Navigation property
         [Required]
         public Restaurant Restaurant { get; set; } 
+
+        public List<MenuItem > MenuItems { get; set; }   
     }
 
     

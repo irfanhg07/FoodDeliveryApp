@@ -9,6 +9,7 @@ namespace DomainLayer.Model
 {
     public class MenuItem
     {
+        [Key]
         public int ItemId { get; set; }
 
         [Required]
@@ -22,5 +23,7 @@ namespace DomainLayer.Model
 
         // Navigation property
         public Restaurant Restaurant { get; set; }
+
+        public List<Order> Orders { get; set; }
     }
 }
