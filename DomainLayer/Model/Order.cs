@@ -15,9 +15,6 @@ namespace DomainLayer.Model
         public int OrderId { get; set; }
         [Required]
         public int UserId { get; set; }
-        // Foreign key navigation property
-        [ForeignKey("UserId")]
-        [JsonIgnore]
         public User? User { get; set; }
         [Required]
         [Column(TypeName = "decimal(10, 2)")]

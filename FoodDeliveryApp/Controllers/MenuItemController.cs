@@ -1,6 +1,8 @@
 ﻿using DomainLayer.Model;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Interface;
+using System.Net;
+using Wps.WebApi.Middlewares.Exceptions;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -38,9 +40,15 @@ namespace FoodDeliveryApp.Controllers
         [HttpPost]
         public IActionResult AddMenuItem([FromBody] MenuItem menuItem)
         {
+            if (menuItem == null || string.IsNullOrEmpty(menuItem.ItemName))
+            {
+                throw new WpsException("MenuItem cannot be null or empty", "WPS002", HttpStatusCode.BadRequest);
+            }
+
             var createdMenuItem = _menuItemService.CreateMenuItem(menuItem);
             return Ok(createdMenuItem);
         }
+
 
         // DELETE: api/v1/menuitems/{id}
         [HttpDelete("{id}")]

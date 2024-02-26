@@ -14,8 +14,7 @@ namespace DomainLayer.Model
         [Key]
         public int ItemId { get; set; }
 
-        [Required]
-        [StringLength(255)]
+        [Required(AllowEmptyStrings = true)] // Allow empty string as a valid value
         public string ItemName { get; set; }
 
         [Required]

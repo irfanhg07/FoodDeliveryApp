@@ -121,6 +121,9 @@ public class Startup
         app.UseAuthentication();
         app.UseAuthorization();
 
+        // Register your custom exception handling middleware here
+        app.UseMiddleware<WpsExceptionHandlerMiddleware>();
+
 
         app.UseEndpoints(endpoints =>
         {

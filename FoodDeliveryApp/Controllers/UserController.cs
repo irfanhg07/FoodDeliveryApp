@@ -56,7 +56,7 @@ namespace FoodDeliveryApp.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
         {
-            if (id != user.Id)
+            if (id != user.UserId)
                 return BadRequest(); 
 
             var updatedUser = _userService.UpdateUser(user);
