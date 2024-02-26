@@ -36,6 +36,9 @@ public class Startup
         services.AddScoped<IMenuItem, MenuItemService>();
         services.AddScoped<IAddress, AddressService>();
 
+    /*    services.AddAutoMapper(typeof(MappingProfile));
+        DependencyInjectionLifetimeRegistry.RegisterServices(builder.Services);*/
+
 
 
         services.AddEndpointsApiExplorer();

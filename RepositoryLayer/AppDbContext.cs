@@ -1,4 +1,5 @@
-﻿using DomainLayer.Model;
+﻿using DomainLayer.Entity;
+using DomainLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace RepositoryLayer
         public DbSet<Order> Orders { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,12 +41,23 @@ namespace RepositoryLayer
                 .WithMany(a => a.UserAddresses)
                 .HasForeignKey(ua => ua.AddressId);
 
-            // Relation between user and order(one to many)
-                modelBuilder.Entity<Order>()
-            .HasOne(o => o.User)
-            .WithMany(u => u.Orders)
-            .HasForeignKey(o => o.UserId)
+            // Relation between order and MenuItem(many to many)
+
+            modelBuilder.Entity<OrderDetails>()
+                  .HasKey(ua => new { ua.OrderId, ua.MenuItemId }); // Define composite primary key
+            modelBuilder.Entity<OrderDetails>()
+            .HasOne(o => o.Order)
+            .WithMany(u => u.orderDetails)
+            .HasForeignKey(o => o.OrderId)
             .IsRequired();
+
+            modelBuilder.Entity<OrderDetails>()
+               .HasOne(ua => ua.menuItem)
+               .WithMany(u => u.OrderDetails)
+               .HasForeignKey(ua => ua.MenuItemId);
+
+
+    
 
 
         }

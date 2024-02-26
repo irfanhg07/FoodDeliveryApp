@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,5 +30,7 @@ namespace DomainLayer.Model
 
         [JsonIgnore]
         public List<Order>? Orders { get; set; }
+
+        public List<OrderDetails> OrderDetails { get; set; }
     }
 }
