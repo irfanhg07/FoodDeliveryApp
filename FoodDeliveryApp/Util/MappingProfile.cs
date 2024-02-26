@@ -1,5 +1,6 @@
-﻿/*using AutoMapper;
+﻿using AutoMapper;
 using DomainLayer.DTO.Request;
+using DomainLayer.DTO.Response;
 using DomainLayer.Model;
 
 namespace FoodDeliveryApp.Util
@@ -8,14 +9,16 @@ namespace FoodDeliveryApp.Util
     {
         public MappingProfile()
         {
-            //Category
-           
 
-            //TagCategory
-           
+
             CreateMap<MenuItemRequest, MenuItem>();
+            CreateMap<User, UserRequest>();
+            CreateMap<UserRequest, User>();
+            CreateMap<UserResponse, User>();
+            CreateMap<User, UserResponse>();
+            CreateMap<IEnumerable<UserResponse>, IEnumerable<User>>()
+    .       ConvertUsing(source => source.Select(Mapper.Map<User>));
         }
     }
 }
 
-*/
