@@ -28,8 +28,6 @@ namespace DomainLayer.Model
         [JsonIgnore]
         public Restaurant? Restaurant { get; set; }
 
-        [JsonIgnore]
-        public List<Order>? Orders { get; set; }
 
         public List<OrderDetails> OrderDetails { get; set; }
     }

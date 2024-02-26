@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Model;
+using Microsoft.EntityFrameworkCore;
 using RepositoryLayer;
 using ServiceLayer.Interface;
 using System;
@@ -18,75 +19,77 @@ namespace ServiceLayer.Implementation
             _dbContext = dbContext;
         }
         //Create User
-        public string CreateUser(User user)
+        public bool CreateUser(User user)
         {
             try
             {
-                this._dbContext.Users.Add(user);
-                this._dbContext.SaveChanges();
-                return "Success";
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
-                return ex.Message;  
-            }
-        }
-
-
-        //Delete User
-        public Boolean DeleteUser(int id)
-        {
-            try
-            {
-                this._dbContext.Users.Find(id);
-                this._dbContext.Remove(id);
-                this._dbContext.SaveChanges();
-                return true;
-            }catch (Exception ex)
-            {
-                
+               
                 return false;
             }
         }
 
-        //Get All Users
-        public List<User> GetAllUsers()
+        public bool DeleteUser(User user)
+        {
+            try
+            {
+                _dbContext.Users.Remove(user);
+                return Save();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately, e.g., log the error
+                return false;
+            }
+        }
+
+        public List<User> GetUsers()
         {
             return _dbContext.Users.ToList();
         }
 
-        //Get  a single user
-        public User GetSingleUser(int id)
+        public User GetUser(int id)
         {
-            // return this._dbContext.Users.Where(x=>x.Id==id).FirstOrDefault();
-            return this._dbContext.Users.Find(id);
+            return _dbContext.Users.Find(id);
         }
 
-        //Update a User
-        public string UpdateUser(User user)
+        public bool UserExists(int id)
+        {
+            return _dbContext.Users.Any(u => u.UserId == id);
+        }
+
+        public bool Save()
         {
             try
             {
-
-
-                var userValue = this._dbContext.Users.Find(user.UserId);
-                if (userValue != null)
-                {
-                    userValue.UserName = user.UserName;
-                    return "successfully updated";
-
-                }
-                else
-                {
-                    return "No record found";
-                }
+                return _dbContext.SaveChanges() > 0;
             }
-            catch(Exception ex) {
-                return ex.Message;  
-            
+            catch (Exception ex)
+            {
+                // Handle exception appropriately, e.g., log the error
+                return false;
             }
-          
-
         }
+
+        public bool UpdateUser(User user)
+        {
+            try
+            {
+                _dbContext.Entry(user).State = EntityState.Modified;
+                return Save();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately, e.g., log the error
+                return false;
+            }
+        }
+
+       
     }
 }

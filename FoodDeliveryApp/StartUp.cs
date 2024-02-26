@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RepositoryLayer;
@@ -35,9 +36,8 @@ public class Startup
         services.AddScoped<IRestaurant, RestaurantService>();
         services.AddScoped<IMenuItem, MenuItemService>();
         services.AddScoped<IAddress, AddressService>();
+        services.AddAutoMapper(typeof(Startup));
 
-    /*    services.AddAutoMapper(typeof(MappingProfile));
-        DependencyInjectionLifetimeRegistry.RegisterServices(builder.Services);*/
 
 
 
