@@ -69,7 +69,7 @@ namespace ServiceLayer.Implementation
             {
 
 
-                var userValue = this._dbContext.Users.Find(user.Id);
+                var userValue = this._dbContext.Users.Find(user.UserId);
                 if (userValue != null)
                 {
                     userValue.UserName = user.UserName;

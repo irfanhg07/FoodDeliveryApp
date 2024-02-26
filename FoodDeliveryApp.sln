@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryApp", "FoodDeliveryApp\FoodDeliveryApp.csproj", "{1DA4670B-7C0C-4CF9-A627-0E32308B557C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDeliveryApp", "FoodDeliveryApp\FoodDeliveryApp.csproj", "{1DA4670B-7C0C-4CF9-A627-0E32308B557C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{11828100-C834-47B7-B239-19EC3AEA46FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{11828100-C834-47B7-B239-19EC3AEA46FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{6F907F9B-37BC-4979-A292-6F33C0C762A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{6F907F9B-37BC-4979-A292-6F33C0C762A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,12 +25,12 @@ Global
 		{11828100-C834-47B7-B239-19EC3AEA46FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11828100-C834-47B7-B239-19EC3AEA46FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11828100-C834-47B7-B239-19EC3AEA46FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F907F9B-37BC-4979-A292-6F33C0C762A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
