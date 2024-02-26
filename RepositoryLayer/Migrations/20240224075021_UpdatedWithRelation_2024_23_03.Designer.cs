@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RepositoryLayer;
@@ -11,9 +12,10 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240224075021_UpdatedWithRelation_2024_23_03")]
+    partial class UpdatedWithRelation_2024_23_03
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AddressUser", b =>
+                {
+                    b.Property<int>("AddressesAddressId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AddressesAddressId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AddressUser");
+                });
 
             modelBuilder.Entity("DomainLayer.Model.Address", b =>
                 {
@@ -69,7 +86,8 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -149,11 +167,11 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Model.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -178,7 +196,7 @@ namespace RepositoryLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -186,29 +204,18 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("DomainLayer.Model.UserAddress", b =>
                 {
                     b.Property<int>("UserId")
-<<<<<<< HEAD
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("integer");
-=======
                         .HasColumnType("integer")
                         .HasColumnName("user_Id");
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("integer")
                         .HasColumnName("Address_id");
->>>>>>> 0c6b50c16129b4d0b8b15fb74b7f569112be5dd9
 
                     b.HasKey("UserId", "AddressId");
 
                     b.HasIndex("AddressId");
 
-<<<<<<< HEAD
-                    b.ToTable("UserAddresses");
-=======
                     b.ToTable("UserAddress");
->>>>>>> 0c6b50c16129b4d0b8b15fb74b7f569112be5dd9
                 });
 
             modelBuilder.Entity("MenuItemOrder", b =>
@@ -224,6 +231,21 @@ namespace RepositoryLayer.Migrations
                     b.HasIndex("OrdersOrderId");
 
                     b.ToTable("MenuItemOrder");
+                });
+
+            modelBuilder.Entity("AddressUser", b =>
+                {
+                    b.HasOne("DomainLayer.Model.Address", null)
+                        .WithMany()
+                        .HasForeignKey("AddressesAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DomainLayer.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
@@ -258,11 +280,7 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Model.UserAddress", b =>
                 {
-<<<<<<< HEAD
-                    b.HasOne("DomainLayer.Model.Address", "Address")
-=======
                     b.HasOne("DomainLayer.Model.Address", null)
->>>>>>> 0c6b50c16129b4d0b8b15fb74b7f569112be5dd9
                         .WithMany("UserAddresses")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -274,11 +292,6 @@ namespace RepositoryLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-<<<<<<< HEAD
-                    b.Navigation("Address");
-
-=======
->>>>>>> 0c6b50c16129b4d0b8b15fb74b7f569112be5dd9
                     b.Navigation("User");
                 });
 

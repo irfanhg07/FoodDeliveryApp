@@ -13,7 +13,12 @@ namespace DomainLayer.Model
     {
         [Key]
         public int OrderId { get; set; }
+<<<<<<< HEAD:DomainLayer/Model/Order.cs
         [Required]
+=======
+
+      
+>>>>>>> 0c6b50c16129b4d0b8b15fb74b7f569112be5dd9:DomainLayer/Entity/Order.cs
         public int UserId { get; set; }
         public User? User { get; set; }
         [Required]
