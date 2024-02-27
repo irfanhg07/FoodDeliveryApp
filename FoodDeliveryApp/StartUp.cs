@@ -36,11 +36,11 @@ public class Startup
         services.AddScoped<IRestaurant, RestaurantService>();
         services.AddScoped<IMenuItem, MenuItemService>();
         services.AddScoped<IAddress, AddressService>();
-        services.AddAutoMapper(typeof(Startup));
+
+        services.AddScoped<IOrder, OrderService>(); 
 
 
-
-
+       //services.AddAutoMapper(typeof(MappingProfile));
         services.AddEndpointsApiExplorer();
 
         services.AddCors(options =>

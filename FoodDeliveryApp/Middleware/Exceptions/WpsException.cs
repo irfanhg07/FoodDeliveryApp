@@ -11,6 +11,7 @@ namespace Wps.WebApi.Middlewares.Exceptions
             StatusCode = statusCode;
         }
 
+
         public string ErrorCode { get; }
 
         public HttpStatusCode StatusCode { get; }

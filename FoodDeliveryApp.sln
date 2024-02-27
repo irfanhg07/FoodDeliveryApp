@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodDeliveryApp", "FoodDeliveryApp\FoodDeliveryApp.csproj", "{1DA4670B-7C0C-4CF9-A627-0E32308B557C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11828100-C834-47B7-B239-19EC3AEA46FD} = {11828100-C834-47B7-B239-19EC3AEA46FD}
+		{2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8} = {2190A95F-5E2E-47F3-A8B1-A100EDB2C2C8}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{11828100-C834-47B7-B239-19EC3AEA46FD}"
 EndProject
