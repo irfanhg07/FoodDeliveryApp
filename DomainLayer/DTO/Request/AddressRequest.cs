@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace DomainLayer.DTO.Request
 {
     public class AddressRequest
-    {
+        
+    {   public int AddressId { get; set; }
         [StringLength(50)]
         public string State { get; set; }
 

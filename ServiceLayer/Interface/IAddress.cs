@@ -6,11 +6,12 @@ namespace ServiceLayer.Implementation
 {
     public interface IAddress
     {
-        Task<IEnumerable<Address>> GetAddressesAsync();
-        Task<Address> GetAddressByIdAsync(int id);
-        Task AddAddressAsync(Address address);
-        Task UpdateAddressAsync(Address address);
-        Task<bool> AddressExistsAsync(int id);
-        Task DeleteAddressAsync(Address address);
+        IEnumerable<Address> GetAddresses();
+        Address GetAddress(int id);
+        bool AddressExists(int id);
+        public bool CreateAddressForUser(int userId, Address address);
+        List<Address> GetAddressesByUserId(int userId);
+        bool UpdateAddress(Address address);
+        bool DeleteAddress(Address address);
     }
 }

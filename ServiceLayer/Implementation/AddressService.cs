@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DomainLayer.Model;
+﻿using DomainLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer;
+using ServiceLayer.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ServiceLayer.Implementation
 {
@@ -18,37 +17,87 @@ namespace ServiceLayer.Implementation
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Address>> GetAddressesAsync()
+        public bool CreateAddressForUser(int userId, Address address)
         {
-            return await _dbContext.Addresses.ToListAsync();
+            try
+            {
+                // Create a new entry in UserAddress table associating the user with the address
+                var userAddress = new UserAddress { UserId = userId, Address = address };
+                _dbContext.UserAddresses.Add(userAddress);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
         }
 
-        public async Task<Address> GetAddressByIdAsync(int id)
+
+        public bool DeleteAddress(Address address)
         {
-            return await _dbContext.Addresses.FindAsync(id);
+            try
+            {
+                _dbContext.Addresses.Remove(address);
+                 _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+              
+                return false;
+            }
         }
 
-        public async Task AddAddressAsync(Address address)
+        public IEnumerable<Address> GetAddresses()
         {
-            _dbContext.Addresses.Add(address);
-            await _dbContext.SaveChangesAsync();
+            return _dbContext.Addresses.ToList();
         }
 
-        public async Task UpdateAddressAsync(Address address)
+        public List<Address> GetAddressesByUserId(int userId)
         {
-            _dbContext.Entry(address).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            return _dbContext.UserAddresses
+                .Where(ua => ua.UserId == userId)
+                .Select(ua => ua.Address)
+                .ToList();
         }
 
-        public async Task<bool> AddressExistsAsync(int id)
+        public Address GetAddress(int id)
         {
-            return await _dbContext.Addresses.AnyAsync(e => e.AddressId == id);
+            return _dbContext.Addresses.Find(id);
         }
 
-        public async Task DeleteAddressAsync(Address address)
+        public bool AddressExists(int id)
         {
-            _dbContext.Addresses.Remove(address);
-            await _dbContext.SaveChangesAsync();
+            return _dbContext.Addresses.Any(a => a.AddressId == id);
+        }
+
+        public bool Save()
+        {
+            try
+            {
+                return _dbContext.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+        }
+
+        public bool UpdateAddress(Address address)
+        {
+            try
+            {
+                _dbContext.Entry(address).State = EntityState.Modified;
+                return Save();
+            }
+            catch (Exception ex)
+            {
+               
+                return false;
+            }
         }
     }
 }

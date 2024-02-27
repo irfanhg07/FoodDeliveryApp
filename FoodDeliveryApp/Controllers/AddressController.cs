@@ -1,94 +1,140 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using DomainLayer.Model;
+using ServiceLayer.Interface;
+using FoodDeliveryApp.Util;
+using DomainLayer.DTO.Request;
+using DomainLayer.DTO.Response;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Net;
+using System.Linq;
+using AutoMapper;
 using ServiceLayer.Implementation;
 
-namespace YourNamespace.Controllers
+namespace PokemonReviewApp.Controllers
 {
     [Route("api/v1/UserAddresses")]
     [ApiController]
     public class AddressController : ControllerBase
     {
-        private readonly IAddress _addressService;  
+        private readonly IAddress _addressService;
+        private readonly IUser _userService;
+        private readonly IMapper _mapper;
 
-        public AddressController(IAddress addressService)  
+        public AddressController(IAddress addressService,IUser userService, IMapper mapper)
         {
             _addressService = addressService;
+            _userService = userService;
+            _mapper = mapper;
         }
 
-        // GET: api/Address
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
+        public IActionResult GetAddresses()
         {
-            var addresses = await _addressService.GetAddressesAsync(); 
-            return Ok(addresses);
+            var addresses = _addressService.GetAddresses();
+            var addressResponses = _mapper.Map<IEnumerable<AddressResponse>>(addresses);
+            return ApiResponse.SuccessResponse("Addresses retrieved successfully.", addressResponses, 200);
         }
 
-        // GET: api/Address/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(int id)
+        [HttpGet("{addressId}")]
+        public IActionResult GetAddress(int addressId)
         {
-            var address = await _addressService.GetAddressByIdAsync(id); 
-
+            var address = _addressService.GetAddress(addressId);
             if (address == null)
-            {
-                return NotFound();
-            }
+                return ApiResponse.ErrorResponse("Address not found.", 404);
 
-            return Ok(address);
+            var addressResponse = _mapper.Map<AddressResponse>(address);
+            return ApiResponse.SuccessResponse("Address retrieved successfully.", addressResponse, 200);
         }
 
-        // POST: api/Address
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
+        public IActionResult CreateAddress(int userId, [FromBody] AddressRequest addressRequest)
         {
-            await _addressService.AddAddressAsync(address); 
-            return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
+            if (addressRequest == null)
+                return BadRequest("Address data is null.");
+
+            // Create a new address instance
+            var address = _mapper.Map<Address>(addressRequest);
+
+            // Try to create the address
+            if (!_addressService.CreateAddressForUser(userId, address))
+                return ApiResponse.ErrorResponse("Something went wrong while saving the address.", 500);
+
+            // Map the created address to an address response DTO
+            var addressResponse = _mapper.Map<AddressResponse>(address);
+
+            // Return a success response
+            return ApiResponse.SuccessResponse("Address created successfully.", addressResponse, 201);
         }
 
-        // PUT: api/Address/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(int id, Address address)
+        [HttpGet("{userId}/addresses")]
+        public IActionResult GetAddressesByUserId(int userId)
         {
-            if (id != address.AddressId)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                await _addressService.UpdateAddressAsync(address); 
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _addressService.AddressExistsAsync(id))  
+                // Check if the user exists
+                var userExists = _userService.UserExists(userId);
+                if (!userExists)
                 {
-                    return NotFound();
+                    
+                    return ApiResponse.ErrorResponse("User does not exist.", 404);
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                var addresses = _addressService.GetAddressesByUserId(userId);
+
+               
+                if (addresses == null || !addresses.Any())
+                {
+                    
+                    return ApiResponse.SuccessResponse("User does not have any addresses.", new List<AddressResponse>(), 200);
+                }
+
+              
+                var addressResponses = _mapper.Map<IEnumerable<AddressResponse>>(addresses);
+
+               
+                return ApiResponse.SuccessResponse("Addresses retrieved successfully.", addressResponses, 200);
+            }
+            catch (Exception ex)
+            {
+               
+                return ApiResponse.ErrorResponse("An error occurred while retrieving addresses.", 500);
+            }
         }
 
-        // DELETE: api/Address/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(int id)
-        {
-            var address = await _addressService.GetAddressByIdAsync(id);  
-            if (address == null)
-            {
-                return NotFound();
-            }
 
-            await _addressService.DeleteAddressAsync(address);  
-            return NoContent();
+
+
+        [HttpPut("{addressId}")]
+        public IActionResult UpdateAddress(int addressId, [FromBody] AddressRequest addressRequest)
+        {
+            if (addressRequest == null || addressId != addressRequest.AddressId)
+                return BadRequest("Invalid address data.");
+
+            var existingAddress = _addressService.GetAddress(addressId);
+
+            if (existingAddress == null)
+                return ApiResponse.ErrorResponse("Address not found.", 404);
+
+            _mapper.Map(addressRequest, existingAddress);
+
+            if (!_addressService.UpdateAddress(existingAddress))
+                return ApiResponse.ErrorResponse("Something went wrong updating the address.", 500);
+
+            var updatedAddressResponse = _mapper.Map<AddressResponse>(existingAddress);
+            return ApiResponse.SuccessResponse("Address updated successfully.", updatedAddressResponse, 200);
+        }
+
+        [HttpDelete("{addressId}")]
+        public IActionResult DeleteAddress(int addressId)
+        {
+            if (!_addressService.AddressExists(addressId))
+                return ApiResponse.ErrorResponse("Address not found.", 404);
+
+            var address = _addressService.GetAddress(addressId);
+
+            if (!_addressService.DeleteAddress(address))
+                return ApiResponse.ErrorResponse("Something went wrong deleting the address.", 500);
+
+            return ApiResponse.SuccessResponse("Address deleted successfully.", null, 204);
         }
     }
 }

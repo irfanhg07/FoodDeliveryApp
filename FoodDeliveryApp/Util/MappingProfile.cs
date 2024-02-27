@@ -18,6 +18,10 @@ namespace FoodDeliveryApp.Util
             CreateMap<User, UserResponse>();
             CreateMap<IEnumerable<UserResponse>, IEnumerable<User>>()
     .       ConvertUsing(source => source.Select(Mapper.Map<User>));
+            CreateMap<Address,AddressRequest>().ReverseMap();
+            CreateMap<Address, AddressResponse>().ReverseMap();
+
+
         }
     }
 }
