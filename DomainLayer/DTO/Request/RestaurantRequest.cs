@@ -17,6 +17,7 @@ namespace DomainLayer.DTO.Requests
 
         [StringLength(1000)]
         public string Description { get; set; }
+        //Comment
     }
 }
 

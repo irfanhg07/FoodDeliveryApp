@@ -17,5 +17,6 @@ namespace DomainLayer.DTO.Request
 
         [Required]
         public int RestaurantId { get; set; }
+        //Comment
     }
 }

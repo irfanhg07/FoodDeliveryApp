@@ -11,7 +11,7 @@ namespace DomainLayer.DTO.Requests
                 .MaximumLength(255).WithMessage("Name length cannot exceed 255 characters");
 
             RuleFor(r => r.Description)
-                .MaximumLength(1000).WithMessage("Description length cannot exceed 1000 characters");
+                .MaximumLength(1000).WithMessage("Description length can't exceed 1000 characters");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace DomainLayer.DTO.Request
         public MenuItemRequestValidator()
         {
             RuleFor(x => x.ItemName)
-                .NotEmpty().WithMessage("ItemName cannot be empty")
+                .NotEmpty().WithMessage("ItemName can't be empty")
                 .MaximumLength(255).WithMessage("ItemName should be at most 255 characters");
 
             RuleFor(x => x.Price)
