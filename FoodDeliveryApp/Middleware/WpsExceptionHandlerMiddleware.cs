@@ -42,7 +42,6 @@ public class WpsExceptionHandlerMiddleware
             exception.Message,
             exception.StatusCode
         };
-
         await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 
@@ -59,10 +58,8 @@ public class WpsExceptionHandlerMiddleware
             Details = databaseErrorMessage,
             StatusCode = HttpStatusCode.InternalServerError
         };
-
         await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
-
     private string GetDatabaseErrorMessage(DbUpdateException dbException)
     {
         var errorMessage = "An error occurred while saving changes to the database.";
@@ -71,7 +68,7 @@ public class WpsExceptionHandlerMiddleware
         {
             errorMessage = $"PostgreSQL Error: {postgresException.Message}";
         }
-
         return errorMessage;
     }
 }
+

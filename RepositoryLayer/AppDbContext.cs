@@ -1,15 +1,19 @@
 ﻿using DomainLayer.Entity;
 using DomainLayer.Model;
 using Microsoft.EntityFrameworkCore;
-
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions con): base(con) 
+        public AppDbContext(DbContextOptions con) : base(con)
         {
-        
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -19,17 +23,19 @@ namespace RepositoryLayer
         public DbSet<MenuItem> MenuItem { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserAddress>()
                    .HasKey(ua => new { ua.UserId, ua.AddressId }); // Define composite primary key
 
             // Relation between user and address(many to many)
+            
+
             modelBuilder.Entity<UserAddress>()
                 .HasOne(ua => ua.User)
                 .WithMany(u => u.UserAddresses)
                 .HasForeignKey(ua => ua.UserId);
+
 
             modelBuilder.Entity<UserAddress>()
                 .HasOne(ua => ua.Address)
@@ -38,25 +44,21 @@ namespace RepositoryLayer
 
             // Relation between order and MenuItem(many to many)
 
+
             modelBuilder.Entity<OrderDetails>()
                   .HasKey(ua => new { ua.OrderId, ua.MenuItemId }); // Define composite primary key
             modelBuilder.Entity<OrderDetails>()
             .HasOne(o => o.Order)
             .WithMany(u => u.orderDetails)
+
             .HasForeignKey(o => o.OrderId)
             .IsRequired();
 
             modelBuilder.Entity<OrderDetails>()
                .HasOne(ua => ua.menuItem)
-               .WithMany(u => u.OrderDetails)
+               .WithMany(u => u.orderDetails)
                .HasForeignKey(ua => ua.MenuItemId);
-
-
-    
-
 
         }
     }
-
-   }
-
+}
