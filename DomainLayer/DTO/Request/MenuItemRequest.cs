@@ -9,6 +9,7 @@ namespace DomainLayer.DTO.Request
 {
     public class MenuItemRequest
     {
+
         [StringLength(255)]
         public string ItemName { get; set; }
 

@@ -14,11 +14,10 @@ namespace DomainLayer.Model
     {
         [Key]
         public int OrderId { get; set; }
-        [Required]
+
+
         public int UserId { get; set; }
-        // Foreign key navigation property
-        [ForeignKey("UserId")]
-        [JsonIgnore]
+
         public User? User { get; set; }
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
@@ -31,10 +30,11 @@ namespace DomainLayer.Model
         public DateTime OrderDate { get; set; }
         // Foreign key
         public int RestaurantId { get; set; }
-        // Navigation property
-        [Required]
-        [JsonIgnore]
-        public Restaurant? Restaurant { get; set; }
+
+   
+      
+        public Restaurant Restaurant { get; set; }
+  
         public List<OrderDetails> orderDetails { get; set; }
     }
 

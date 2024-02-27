@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace DomainLayer.Dto
+namespace DomainLayer.DTO.Request
 {
-    public class UserInputDto
+    public class UserRequest
     {
-        [Required(ErrorMessage = "Username is required")]
+        public int Id { get; set; } 
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "Phone number is required")]
+
         [RegularExpression(@"^[\d\s+-]{10,15}$", ErrorMessage = "Invalid phone number")]
+
         public string UserPhone { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
+
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public string UserEmail { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long")]
         public string Password { get; set; }
 

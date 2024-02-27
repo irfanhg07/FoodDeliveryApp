@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RepositoryLayer;
@@ -11,9 +12,10 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240226044824_updatedUserTable")]
+    partial class updatedUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace RepositoryLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("DomainLayer.Entity.OrderDetails", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MenuItemId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("OrderId", "MenuItemId");
-
-                    b.HasIndex("MenuItemId");
-
-                    b.ToTable("OrderDetails");
-                });
 
             modelBuilder.Entity("DomainLayer.Model.Address", b =>
                 {
@@ -81,9 +68,6 @@ namespace RepositoryLayer.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemId"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
@@ -202,23 +186,6 @@ namespace RepositoryLayer.Migrations
                 });
 
             modelBuilder.Entity("DomainLayer.Model.UserAddress", b =>
-
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "AddressId");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("UserAddresses");
-                });
-
-            modelBuilder.Entity("MenuItemOrder", b =>
-
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -233,25 +200,19 @@ namespace RepositoryLayer.Migrations
                     b.ToTable("UserAddresses");
                 });
 
-            modelBuilder.Entity("DomainLayer.Entity.OrderDetails", b =>
+            modelBuilder.Entity("MenuItemOrder", b =>
                 {
-                    b.HasOne("DomainLayer.Model.MenuItem", "menuItem")
+                    b.Property<int>("MenuItemsItemId")
+                        .HasColumnType("integer");
 
-                        .WithMany("OrderDetails")
+                    b.Property<int>("OrdersOrderId")
+                        .HasColumnType("integer");
 
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasKey("MenuItemsItemId", "OrdersOrderId");
 
-                    b.HasOne("DomainLayer.Model.Order", "Order")
-                        .WithMany("orderDetails")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasIndex("OrdersOrderId");
 
-                    b.Navigation("Order");
-
-                    b.Navigation("menuItem");
+                    b.ToTable("MenuItemOrder");
                 });
 
             modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
@@ -285,7 +246,6 @@ namespace RepositoryLayer.Migrations
                 });
 
             modelBuilder.Entity("DomainLayer.Model.UserAddress", b =>
-
                 {
                     b.HasOne("DomainLayer.Model.Address", "Address")
                         .WithMany("UserAddresses")
@@ -305,53 +265,23 @@ namespace RepositoryLayer.Migrations
                 });
 
             modelBuilder.Entity("MenuItemOrder", b =>
-
                 {
-                    b.HasOne("DomainLayer.Model.Address", "Address")
-                        .WithMany("UserAddresses")
-                        .HasForeignKey("AddressId")
+                    b.HasOne("DomainLayer.Model.MenuItem", null)
+                        .WithMany()
+                        .HasForeignKey("MenuItemsItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DomainLayer.Model.User", "User")
-                        .WithMany("UserAddresses")
-                        .HasForeignKey("UserId")
+                    b.HasOne("DomainLayer.Model.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Address");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DomainLayer.Model.Address", b =>
                 {
                     b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
-                {
-                    b.Navigation("orderDetails");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.Order", b =>
-                {
-                    b.Navigation("orderDetails");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.Address", b =>
-                {
-                    b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.MenuItem", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("DomainLayer.Model.Order", b =>
-                {
-                    b.Navigation("orderDetails");
                 });
 
             modelBuilder.Entity("DomainLayer.Model.Restaurant", b =>

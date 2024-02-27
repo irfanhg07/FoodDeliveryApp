@@ -1,4 +1,5 @@
 ﻿using System.Net;
+
 namespace Wps.WebApi.Middlewares.Exceptions
 {
     public class WpsException : ApplicationException
@@ -9,13 +10,10 @@ namespace Wps.WebApi.Middlewares.Exceptions
             ErrorCode = errorCode;
             StatusCode = statusCode;
         }
+
+
         public string ErrorCode { get; }
+
         public HttpStatusCode StatusCode { get; }
     }
 }
-
-
-
-
-
-

@@ -13,7 +13,9 @@ namespace DomainLayer.DTO.Response
         public decimal Price { get; set; }
         public int RestaurantId { get; set; }
 
+
         // Additional properties if needed
+
 
         public MenuItemResponse(int itemId, string itemName, decimal price, int restaurantId)
         {
@@ -23,4 +25,6 @@ namespace DomainLayer.DTO.Response
             RestaurantId = restaurantId;
         }
     }
+
 }
+

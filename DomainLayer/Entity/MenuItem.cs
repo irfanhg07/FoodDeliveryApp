@@ -13,11 +13,13 @@ namespace DomainLayer.Model
     public class MenuItem
     {
         [Key]
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ItemId { get; set; }
 
       
         [StringLength(255)]
+
         public string ItemName { get; set; }
 
         [Required]
@@ -26,13 +28,16 @@ namespace DomainLayer.Model
         [ForeignKey("RestaurantId")]
         public int RestaurantId { get; set; } // Foreign key
 
+
         public bool IsDeleted { get; set; } 
+
 
         // Navigation property
         [JsonIgnore]
         public Restaurant? Restaurant { get; set; }
 
-        [JsonIgnore]
-        public List<OrderDetails>? orderDetails { get; set; }
+
+        public List<OrderDetails> OrderDetails { get; set; }
+
     }
 }

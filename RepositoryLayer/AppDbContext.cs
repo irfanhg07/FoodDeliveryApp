@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace RepositoryLayer
 {
     public class AppDbContext : DbContext
@@ -21,12 +22,15 @@ namespace RepositoryLayer
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserAddress>()
                    .HasKey(ua => new { ua.UserId, ua.AddressId }); // Define composite primary key
+
             // Relation between user and address(many to many)
             
+
             modelBuilder.Entity<UserAddress>()
                 .HasOne(ua => ua.User)
                 .WithMany(u => u.UserAddresses)
@@ -39,12 +43,14 @@ namespace RepositoryLayer
                 .HasForeignKey(ua => ua.AddressId);
 
             // Relation between order and MenuItem(many to many)
-            modelBuilder.Entity<OrderDetails>()
-                  .HasKey(ua => new { ua.OrderId, ua.MenuItemId }); // Define composite primary key
+
 
             modelBuilder.Entity<OrderDetails>()
+                  .HasKey(ua => new { ua.OrderId, ua.MenuItemId }); // Define composite primary key
+            modelBuilder.Entity<OrderDetails>()
             .HasOne(o => o.Order)
-            .WithMany(p=> p.orderDetails)
+            .WithMany(u => u.orderDetails)
+
             .HasForeignKey(o => o.OrderId)
             .IsRequired();
 
@@ -52,6 +58,7 @@ namespace RepositoryLayer
                .HasOne(ua => ua.menuItem)
                .WithMany(u => u.orderDetails)
                .HasForeignKey(ua => ua.MenuItemId);
+
         }
     }
 }
