@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DomainLayer.Entity.DomainLayer.Model;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace DomainLayer.Model
 {
-    public class User
-
+    public class User : AuditableEntity
     {
         [Key]
         public int UserId { get; set; }

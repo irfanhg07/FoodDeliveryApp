@@ -29,11 +29,9 @@ namespace DomainLayer.Model
         // Foreign key
         public int RestaurantId { get; set; }
    
-        [JsonIgnore]
-        public Restaurant? Restaurant { get; set; }
-        [JsonIgnore]
-        public List<MenuItem>? MenuItems { get; set; }
-
+      
+        public Restaurant Restaurant { get; set; }
+     
         public List<OrderDetails> orderDetails { get; set; }
     }
 
