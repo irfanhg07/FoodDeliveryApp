@@ -32,7 +32,6 @@ namespace DomainLayer.Model
  
         public ICollection<UserAddress> UserAddresses { get; set; }
 
-       
         public ICollection<Order>? Orders { get; set; }
 
 
