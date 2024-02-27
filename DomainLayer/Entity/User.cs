@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DomainLayer.Model
 {
@@ -28,10 +29,9 @@ namespace DomainLayer.Model
         [StringLength(1000, ErrorMessage = "Profile length can't exceed 1000 characters")]
         public string Profile { get; set; }
         public ICollection<UserAddress> UserAddresses { get; set; }
+        [JsonIgnore]
+        public ICollection<Order>? Orders { get; set; }
 
-        
-       public ICollection<Address> Addresses { get; set; }  
-        public ICollection<Order> Orders { get; set; }
 
 
     }

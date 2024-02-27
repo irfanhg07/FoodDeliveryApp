@@ -1,4 +1,5 @@
-﻿using DomainLayer.Model;
+﻿using DomainLayer.Entity;
+using DomainLayer.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,41 +7,51 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace RepositoryLayer
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions con): base(con) 
+        public AppDbContext(DbContextOptions con) : base(con)
         {
-        
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
-       // public DbSet<UserAddress> UserAddresses { get; set; }
+        public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
-
-
+        public DbSet<OrderDetails> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-/*            modelBuilder.Entity<UserAddress>()
-                .HasKey(u => new { u.UserId, u.AddressId });
+            modelBuilder.Entity<UserAddress>()
+                   .HasKey(ua => new { ua.UserId, ua.AddressId }); // Define composite primary key
+            // Relation between user and address(many to many)
+            
+            modelBuilder.Entity<UserAddress>()
+                .HasOne(ua => ua.User)
+                .WithMany(u => u.UserAddresses)
+                .HasForeignKey(ua => ua.UserId);
 
 
-                    modelBuilder.Entity<User>()
-            .HasMany<Order>(g => g.Orders)
-            .WithOne(s => s.User)
-            .HasForeignKey(s => s.UserId);
+            modelBuilder.Entity<UserAddress>()
+                .HasOne(ua => ua.Address)
+                .WithMany(a => a.UserAddresses)
+                .HasForeignKey(ua => ua.AddressId);
 
-                    modelBuilder.Entity<Restaurant>()
-             .HasMany<Order>(o => o.Orders)
-             .WithOne(r => r.Restaurant)
-             .HasForeignKey(o => o.RestaurantId);*/
+            // Relation between order and MenuItem(many to many)
+            modelBuilder.Entity<OrderDetails>()
+                  .HasKey(ua => new { ua.OrderId, ua.MenuItemId }); // Define composite primary key
 
+            modelBuilder.Entity<OrderDetails>()
+            .HasOne(o => o.Order)
+            .WithMany(p=> p.orderDetails)
+            .HasForeignKey(o => o.OrderId)
+            .IsRequired();
+
+            modelBuilder.Entity<OrderDetails>()
+               .HasOne(ua => ua.menuItem)
+               .WithMany(u => u.orderDetails)
+               .HasForeignKey(ua => ua.MenuItemId);
         }
     }
-
-   }
-
+}

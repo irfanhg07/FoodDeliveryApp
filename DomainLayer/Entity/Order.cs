@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using DomainLayer.Entity;
 
 namespace DomainLayer.Model
 {
@@ -34,8 +35,7 @@ namespace DomainLayer.Model
         [Required]
         [JsonIgnore]
         public Restaurant? Restaurant { get; set; }
-        [JsonIgnore]
-        public List<MenuItem>? MenuItems { get; set; }
+        public List<OrderDetails> orderDetails { get; set; }
     }
 
     

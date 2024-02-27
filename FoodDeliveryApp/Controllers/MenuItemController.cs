@@ -1,6 +1,10 @@
-﻿using DomainLayer.Model;
+﻿using DomainLayer.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Interface;
+using DomainLayer.DTO.Request;
+using DomainLayer.DTO;
+using System.Net;
+using Wps.WebApi.Middlewares.Exceptions;
 
 namespace FoodDeliveryApp.Controllers
 {
@@ -17,53 +21,88 @@ namespace FoodDeliveryApp.Controllers
 
         // GET: api/v1/menuitems
         [HttpGet]
-        public IActionResult GetAllMenuItems()
+        public IActionResult GetAllMenuItems([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 3)
         {
-            var menuItems = _menuItemService.GetAllMenuItems();
-            return Ok(menuItems);
+            IEnumerable<MenuItemResponse> menuItems = _menuItemService.GetAllMenuItems(pageNumber, pageSize);
+
+            var apiResponse = new ApiResponse<MenuItemResponse>(menuItems);
+            return Ok(apiResponse);
         }
 
         // GET: api/v1/menuitems/{id}
         [HttpGet("{id}")]
         public IActionResult GetMenuItem(int id)
         {
-            var menuItem = _menuItemService.GetSingleMenuItem(id);
+            MenuItemResponse menuItem = _menuItemService.GetSingleMenuItem(id);
+
             if (menuItem == null)
                 return NotFound();
 
-            return Ok(menuItem);
+            var apiResponse = new ApiResponse<MenuItemResponse>(menuItem);
+            return Ok(apiResponse);
         }
+
 
         // POST: api/v1/menuitems
         [HttpPost]
-        public IActionResult AddMenuItem([FromBody] MenuItem menuItem)
+        public IActionResult AddMenuItem([FromBody] MenuItemRequest menuItemRequest)
         {
-            var createdMenuItem = _menuItemService.CreateMenuItem(menuItem);
-            return Ok(createdMenuItem);
+            if (menuItemRequest == null)
+            {
+                throw new WpsException("MenuItem cannot be null", "WPS001", HttpStatusCode.BadRequest);
+            }
+
+            // Validate ItemName
+            if (string.IsNullOrEmpty(menuItemRequest.ItemName))
+            {
+                throw new WpsException("ItemName cannot be null or empty", "WPS002", HttpStatusCode.BadRequest);
+            }
+
+            // Validate Price
+            if (menuItemRequest.Price <= 0)
+            {
+                throw new WpsException("Price must be greater than zero", "WPS003", HttpStatusCode.BadRequest);
+            }
+
+            // Validate RestaurantId
+            if (menuItemRequest.RestaurantId <= 0)
+            {
+                throw new WpsException("RestaurantId must be greater than zero", "WPS004", HttpStatusCode.BadRequest);
+            }
+
+            MenuItemResponse createdMenuItem = _menuItemService.CreateMenuItem(menuItemRequest);
+
+            var apiResponse = new ApiResponse<MenuItemResponse>(createdMenuItem);
+            return Ok(apiResponse);
         }
 
         // DELETE: api/v1/menuitems/{id}
         [HttpDelete("{id}")]
-        public IActionResult RemoveMenuItem(int id)
+        public IActionResult DeleteMenuItem(int id)
         {
             if (_menuItemService.DeleteMenuItem(id))
-                return NoContent();
+            {
+                var apiResponse = new ApiResponse<MenuItemResponse>(new List<MenuItemResponse>());
+                return Ok(apiResponse);
+            }
             else
                 return NotFound();
         }
 
-        // PUT: api/v1/menuitems/{id}
-        [HttpPut("{id}")]
-        public IActionResult UpdateMenuItem(int id, [FromBody] MenuItem menuItem)
+        // GET: api/v1/menuitems/resturant/{restaurantId}
+        [HttpGet("restaurant/{restaurantId}")]
+        public IActionResult GetMenuItemsByRestaurant(int restaurantId)
         {
-            if (id != menuItem.ItemId)
-                return BadRequest();
+            IEnumerable<MenuItemResponse> menuItems = _menuItemService.GetMenuItemsByRestaurant(restaurantId);
 
-            var updatedMenuItem = _menuItemService.UpdateMenuItem(menuItem);
-            if (updatedMenuItem == null)
+            if (menuItems == null || !menuItems.Any())
                 return NotFound();
 
-            return Ok(updatedMenuItem);
+            var apiResponse = new ApiResponse<MenuItemResponse>(menuItems);
+            return Ok(apiResponse);
         }
+
+
+
     }
 }

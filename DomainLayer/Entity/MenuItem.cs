@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,9 +13,10 @@ namespace DomainLayer.Model
     public class MenuItem
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ItemId { get; set; }
 
-        [Required]
+      
         [StringLength(255)]
         public string ItemName { get; set; }
 
@@ -24,11 +26,13 @@ namespace DomainLayer.Model
         [ForeignKey("RestaurantId")]
         public int RestaurantId { get; set; } // Foreign key
 
+        public bool IsDeleted { get; set; } 
+
         // Navigation property
         [JsonIgnore]
         public Restaurant? Restaurant { get; set; }
 
         [JsonIgnore]
-        public List<Order>? Orders { get; set; }
+        public List<OrderDetails>? orderDetails { get; set; }
     }
 }
